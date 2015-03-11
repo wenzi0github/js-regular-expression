@@ -1,0 +1,132 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>JS正则表达式</title>
+    <style type="text/css">  
+        table {  
+            border: 1px solid #B1CDE3;  
+            padding:0;     
+            border-collapse: collapse;
+            table-layout:fixed          
+        }  
+          
+        td {  
+            border: 1px solid #B1CDE3;  
+            background: #fff;  
+            font-size:12px;  
+            padding: 3px 3px 3px 8px;  
+            color: #4f6b72;  
+        }  
+    </style>
+</head>
+<body>
+<h2>JS正则表达式</h2>
+<table id="content" border="1" cellpadding="0" cellspacing="0">
+    <thead>
+        <tr><td>功能</td><td>表达式</td><td>测试</td><td>测试结果</td><td>random</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>英文字符，5-20个</td>
+            <td>/^[a-zA-Z]{5,20}$/</td>
+            <td><input type="text" id="engText" /><input type="button" data-type="eng" value="测试" /></td>
+            <td><span class="result"></span></td>
+            <td><span class="random"></span></td>
+        </tr>
+        <tr>
+            <td>数字字符，5-20个</td>
+            <td>/^[0-9]{5,20}$/</td>
+            <td><input type="text" id="numText" /><input type="button" data-type="num" value="测试" /></td>
+            <td><span class="result"></span></td>
+            <td><span class="random"></span></td>
+        </tr>
+        <tr>
+            <td>浮点数(小数点后最多3位)</td>
+            <td>/^[0-9]+[\.]{0,1}[0-9]{0,3}$/</td>
+            <td><input type="text" id="floatText"/><input type="button" data-type="float" value="测试" /></td>
+            <td><span class="result"></span></td>
+            <td><span class="random"></span></td>
+        </tr>
+        <tr>
+            <td>英文数字，5-20个</td>
+            <td>/^[a-zA-Z0-9]{5,20}$/</td>
+            <td><input type="text" id="engnumText" /><input type="button" data-type="engnum" value="测试" /></td>
+            <td><span class="result"></span></td>
+            <td><span class="random"></span></td>
+        </tr>
+        <tr>
+            <td>邮箱</td>
+            <td>/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/</td>
+            <td><input type="text" id="emailText" /><input type="button" data-type="email" value="测试" /></td>
+            <td><span class="result"></span></td>
+            <td><span class="random"></span></td>
+        </tr>
+        <tr>
+            <td>手机号码</td>
+            <td>/^[1][3|5|8][0-9]{9}$/</td>
+            <td><input type="text" id="phoneText" /><input type="button" data-type="phone" value="测试" /></td>
+            <td><span class="result"></span></td>
+            <td><span class="random"></span></td>
+        </tr>
+        <tr>
+            <td>只能汉字</td>
+            <td>/^[\u4e00-\u9fa5]$/</td>
+            <td><input type="text" id="chineseText" value="暂未实现"/><input type="button" data-type="chinese" disabled="true" value="测试" /></td>
+            <td><span class="result"></span></td>
+            <td><span class="random"></span></td>
+        </tr>
+        
+    </tbody>
+</table>
+<pre>
+基本使用说明：
+1. 获取输入框的内容，将其内容存入到text变量中
+2. 将表格中的表达式赋值给patten
+3. 将text与patten进行比对
+<span style="font-weight:700; color:#f00;">4. 上表的random字段仅仅是用来区别多次的测试结果</span>
+
+
+var text = 输入框的内容;
+var patten = 表达式;
+if(!patten.exec(text)){
+    //匹配不成功
+}else{
+    //匹配成功
+}
+</pre>
+</body>
+</html>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    var patten = {
+        'eng':/^[a-zA-Z]{5,20}$/,
+        'email':/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/,
+        'num':/^[0-9]{5,20}$/, 
+        'float':/^[0-9]+[\.]{0,1}[0-9]{0,3}$/, 
+        'engnum':/^[a-zA-Z0-9]{5,20}$/, 
+        'phone':/^[1][3|5|8][0-9]{9}$/, 
+        'chinese':/^[\u4e00-\u9fa5]$/
+    };
+    $("#content input:button").bind("click", function(){
+        var type    = $(this).data("type"),
+            $parent = $(this).parents("tr"),
+            $input  = $parent.find("input[type=text]"), // 输入框
+            $result = $parent.find(".result"),  // 显示结果
+            $random = $parent.find(".random"),  // 随机数，以区别上次的结果
+            text  = $input.val(),
+            patt  = patten[type];
+
+        var ran   = parseInt(Math.random()*1000);
+        
+        if(!patt.exec(text)){
+            $result.html("wrong");
+        }else{
+            $result.html("right");
+        }
+        $random.html(ran);
+    });
+})
+</script>
